@@ -17,8 +17,8 @@ logging.info(" ")
 
 # checking if the zones directory exist
 if not os.path.exists("./zones"):
-    # if the directory is not present then create it.
-    os.makedirs("./zones")
+    logging.error("Unable to find zones folder!")
+    
 
 def load_zones():
 
