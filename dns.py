@@ -3,6 +3,9 @@ import socket, glob, json
 port = 53
 ip = '10.0.0.1'
 
+#Default to Cloudflare
+upstreamip = '1.1.1.1'
+
 queryadress = ""
 queryalert = False
 
@@ -100,7 +103,7 @@ def getzone(domain):
     try:
         return zonedata[zone_name]
     except:
-        print("Could Not Find A Record For: " + zone_name[:-1])
+        print("Could Not Find A Local Record For: " + zone_name[:-1])
         return ""
     
 def checkforrec(data):
@@ -197,6 +200,21 @@ def buildresponse(data):
     
     else:
         return ""
+    
+def checkupstream(request):
+    dnssock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    dnssock.settimeout(2)
+
+    try:
+        dnssock.sendto(request, (upstreamip, 53))
+        data, addr = dnssock.recvfrom(512)
+        return data
+    except:
+        print("Something went wrong Upstream!")
+        return ""
+    finally:
+        dnssock.close()
+
 
 while 1:
     data, addr = sock.recvfrom(512)
@@ -204,6 +222,10 @@ while 1:
     r = buildresponse(data)
     queryadress = ""
     queryalert = False
-    print(" ")
+    if r == "":
+        print("Checking " + upstreamip + " Upstream for a record...")
+        r = checkupstream(data)
     if r != "":
+        print("Sending DNS Record to client!")
+        print(" ")
         sock.sendto(r, addr)

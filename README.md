@@ -8,6 +8,7 @@ An updated version of howCode's howDNS Server
 - Added logging of server info
 - Added logging of what domain each client is requesting and the source of the request
 - Fixed a bug that caused the server to crash when a client requests a domain that doesn't have a defined zone file
+- Added falling back to an upstream DNS server when a client requests a domain that doesn't have a defined zone file
 
 # Orignal Discription
 
