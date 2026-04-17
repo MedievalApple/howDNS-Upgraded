@@ -1,7 +1,7 @@
 import socket, glob, json, logging, os
 
 logger = logging.getLogger("DnsLogger")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 port = 53
 ip = '0.0.0.0'
