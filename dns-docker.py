@@ -1,7 +1,4 @@
-import socket, glob, json, logging, os
-
-logger = logging.getLogger("DnsLogger")
-logger.setLevel(logging.INFO)
+import socket, glob, json, os
 
 port = 53
 ip = '0.0.0.0'
@@ -15,12 +12,12 @@ queryalert = False
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((ip, port))
 
-logger.info("The DNS Has Started On: " + ip + ":" + str(port))
-logger.info(" ")
+print("The DNS Has Started On: " + ip + ":" + str(port))
+print(" ")
 
 # checking if the zones directory exist
 if not os.path.exists("./zones"):
-    logger.error("Unable to find zones folder!")
+    print("Unable to find zones folder!")
     
 def load_zones():
 
@@ -28,9 +25,9 @@ def load_zones():
     zonefiles = glob.glob('zones/*.zone')
     
     #Logs Found Zone Files
-    logger.info("Found These Zone Files: ")
-    logger.info(zonefiles)
-    logger.info(" ")
+    print("Found These Zone Files: ")
+    print(zonefiles)
+    print(" ")
 
     for zone in zonefiles:
         with open(zone) as zonedata:
@@ -105,12 +102,12 @@ def getzone(domain):
     global queryalert
     zone_name = '.'.join(domain)
     if queryalert == False:
-        logger.info(queryadress[0] + ":" + str(queryadress[1]) + " Queried: " + zone_name[:-1])
+        print(queryadress[0] + ":" + str(queryadress[1]) + " Queried: " + zone_name[:-1])
         queryalert = True
     try:
         return zonedata[zone_name]
     except:
-        logger.warning("Could Not Find A Local Record For: " + zone_name[:-1])
+        print("Could Not Find A Local Record For: " + zone_name[:-1])
         return ""
     
 def checkforrec(data):
@@ -217,7 +214,7 @@ def checkupstream(request):
         data, addr = dnssock.recvfrom(512)
         return data
     except:
-        logger.error("Something went wrong Upstream!")
+        print("Something went wrong Upstream!")
         return ""
     finally:
         dnssock.close()
@@ -230,9 +227,9 @@ while 1:
     queryadress = ""
     queryalert = False
     if r == "":
-        logger.info("Checking " + upstreamip + " Upstream for a record...")
+        print("Checking " + upstreamip + " Upstream for a record...")
         r = checkupstream(data)
     if r != "":
-        logger.info("Sending DNS Record to client!")
-        logger.info(" ")
+        print("Sending DNS Record to client!")
+        print(" ")
         sock.sendto(r, addr)
