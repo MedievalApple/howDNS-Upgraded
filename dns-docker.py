@@ -19,7 +19,6 @@ logging.info(" ")
 if not os.path.exists("./zones"):
     logging.error("Unable to find zones folder!")
     
-
 def load_zones():
 
     jsonzone = {}
