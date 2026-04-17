@@ -12,7 +12,7 @@ An updated version of howCode's howDNS Server
 - Added falling back to an upstream DNS server when a client requests a domain that doesn't have a defined zone file
 
 # Docker
-`sudo docker run --restart=unless-stopped --name howdns -v /home/your-user/dns:/data:rw -p 53:53 -it ghcr.io/medievalapple/howdns-upgraded:master`
+`sudo docker run --restart=unless-stopped --name howdns -v /home/your-user/dns:/data:rw -p 53:53/udp -it ghcr.io/medievalapple/howdns-upgraded:master`
 
 # Orignal Discription
 
